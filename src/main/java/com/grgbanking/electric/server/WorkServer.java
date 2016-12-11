@@ -16,10 +16,15 @@ public abstract class WorkServer {
 
 	private static final Logger LOGGER = Logger.getLogger(WorkServer.class);
 
-	protected String opt; //业务类型
+	protected String req; //请求业务类型
+	protected String res; //应答业务类型
 
-	public final String getOpt() {
-		return this.opt;
+	public final String getReq() {
+		return this.req;
+	}
+	
+	public final String getRes() {
+		return this.res;
 	}
 
 	/**
@@ -32,19 +37,30 @@ public abstract class WorkServer {
 		try {
 			Result result = process(json, ip);
 			if (result != null) {
-				jsonResult = new JSONResult(result.getCode(),
-						result.getMessage());
+				String message = result.getMessage();
+				if (message.contains("=")) {
+					String[] msg = message.split("[=]");
+					jsonResult = new JSONResult(getRes(), msg[4], msg[0]);
+					jsonResult.setCode(msg[1]);
+					jsonResult.setNum(msg[2]);
+					jsonResult.setSimilarity(msg[3]);
+					if (msg.length > 5)
+						jsonResult.setDeptName(msg[5]);
+				} else {
+					jsonResult = new JSONResult(getRes(), result.getCode(),
+							result.getMessage());
+				}
 			} else {
-				jsonResult = new JSONResult();
+				throw new IllegalArgumentException("业务异常");
 			}
 		} catch (IllegalArgumentException e) {
 			//业务异常
-			jsonResult = new JSONResult(String.valueOf(StatusEnum.ERROR
+			jsonResult = new JSONResult(getRes(), String.valueOf(StatusEnum.FAIL
 					.getValue()), e.getMessage());
 		} catch (Exception e) {
 			//系统异常
 			LOGGER.error("系统异常", e);
-			jsonResult = new JSONResult(String.valueOf(StatusEnum.ERROR
+			jsonResult = new JSONResult(getRes(), String.valueOf(StatusEnum.FAIL
 					.getValue()), "系统异常");
 		}
 		return jsonResult.toJson();

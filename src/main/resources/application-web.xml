@@ -13,7 +13,7 @@
 		base-package="com.grgbanking.electric.factory,com.grgbanking.electric.worker" />
 		
 	<context:property-placeholder location="classpath:config.properties" />
-	
+	<!-- 终端 -->
 	<bean id="terminalService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
 		<property name="serviceUrl">  
 			<value>${hessian-service.url}/hessian/terminalService</value>   
@@ -22,4 +22,22 @@
 			<value>com.grgbanking.electric.service.ITerminalService</value>  
 		</property>
 	</bean>
+	<!-- 雇员 -->
+	<bean id="employeeService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">  
+            <value>${hessian-service.url}/hessian/employeeService</value>   
+        </property>   
+        <property name="serviceInterface">  
+            <value>com.grgbanking.electric.service.IEmployeeService</value>  
+        </property>
+    </bean>
+    <!-- 指静脉 -->
+    <bean id="fingerVeinService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <property name="serviceUrl">  
+            <value>${hessian-service.url}/hessian/fingerVeinService</value>   
+        </property>   
+        <property name="serviceInterface">  
+            <value>com.grgbanking.electric.service.IFingerVeinService</value>  
+        </property>
+    </bean>
 </beans>

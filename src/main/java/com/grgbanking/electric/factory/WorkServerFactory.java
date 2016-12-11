@@ -30,7 +30,7 @@ public class WorkServerFactory {
 		if (!CollectionUtils.isEmpty(servers)) {
 			map = new HashMap<String, WorkServer>();
 			for (WorkServer server : servers) {
-				map.put(server.getOpt(), server);
+				map.put(server.getReq(), server);
 			}
 		}
 	}

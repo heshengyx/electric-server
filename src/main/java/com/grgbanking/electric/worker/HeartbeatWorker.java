@@ -18,6 +18,9 @@ import com.grgbanking.electric.json.Result;
 import com.grgbanking.electric.server.WorkServer;
 import com.grgbanking.electric.service.ITerminalService;
 
+/**
+ * 心跳
+ */
 @Service
 public class HeartbeatWorker extends WorkServer {
 
@@ -29,7 +32,8 @@ public class HeartbeatWorker extends WorkServer {
 
 	@PostConstruct
 	public void init() {
-		this.opt = OptEnum.HeartBeat.name().toUpperCase();
+		this.req = OptEnum.HeartBeat.name().toUpperCase();
+		this.res = OptEnum.HeartBeat.name();
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class HeartbeatWorker extends WorkServer {
 			terminal.setCode(code);
 			terminal.setHeartbeat(new Date()); // 当前心跳时间
 			terminal.setStatus(String.valueOf(StatusEnum.SUCCESS.getValue())); // 1在线,0断线
-			terminal.setCreateBy("system");
+			terminal.setCreateBy(OptEnum.SYSTEM.name().toLowerCase());
 			terminalService.save(terminal);
 		} else {
 			terminal.setHeartbeat(new Date());
