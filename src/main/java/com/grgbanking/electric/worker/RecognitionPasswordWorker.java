@@ -11,22 +11,23 @@ import com.grgbanking.electric.server.WorkServer;
 import com.grgbanking.electric.service.IRecognitionService;
 
 /**
- * 识别指静脉
+ * 识别密码
  */
 @Service
-public class RecognitionFingerVeinWorker extends WorkServer {
-	
+public class RecognitionPasswordWorker extends WorkServer {
+
 	@Autowired
 	private IRecognitionService recognitionService;
 	
 	@PostConstruct
 	public void init() {
-		this.req = OptEnum.MatchFgVeinReq.name().toUpperCase();
+		this.req = OptEnum.OnlyPwdCheck.name().toUpperCase();
 		this.res = OptEnum.MatchFgVeinResp.name();
 	}
 	
 	@Override
 	protected Result process(String json, String ipaddr) {
-		return recognitionService.recognitionFingerVein(json, ipaddr);
+		return recognitionService.recognitionPassword(json, ipaddr);
 	}
+
 }

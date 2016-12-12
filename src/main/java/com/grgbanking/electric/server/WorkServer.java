@@ -2,9 +2,9 @@ package com.grgbanking.electric.server;
 
 import org.apache.log4j.Logger;
 
+import com.grgbanking.electric.entity.Result;
 import com.grgbanking.electric.enums.StatusEnum;
 import com.grgbanking.electric.json.JSONResult;
-import com.grgbanking.electric.json.Result;
 
 
 /**
@@ -32,10 +32,10 @@ public abstract class WorkServer {
 	 * @param json
 	 * @return
 	 */
-	public final String handler(String json, String ip) {
+	public final String handler(String json, String ipaddr) {
 		JSONResult jsonResult = null;
 		try {
-			Result result = process(json, ip);
+			Result result = process(json, ipaddr);
 			if (result != null) {
 				String message = result.getMessage();
 				if (message.contains("=")) {
