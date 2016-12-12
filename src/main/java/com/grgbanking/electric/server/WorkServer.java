@@ -40,12 +40,12 @@ public abstract class WorkServer {
 				String message = result.getMessage();
 				if (message.contains("=")) {
 					String[] msg = message.split("[=]");
-					jsonResult = new JSONResult(getRes(), msg[4], msg[0]);
+					jsonResult = new JSONResult(getRes(), result.getCode(), msg[0]);
 					jsonResult.setCode(msg[1]);
 					jsonResult.setNum(msg[2]);
 					jsonResult.setSimilarity(msg[3]);
-					if (msg.length > 5)
-						jsonResult.setDeptName(msg[5]);
+					if (msg.length > 4)
+						jsonResult.setDeptName(msg[4]);
 				} else {
 					jsonResult = new JSONResult(getRes(), result.getCode(),
 							result.getMessage());
@@ -71,5 +71,5 @@ public abstract class WorkServer {
 	 * @param json
 	 * @return
 	 */
-	protected abstract Result process(String json, String ip);
+	protected abstract Result process(String json, String ipaddr);
 }
