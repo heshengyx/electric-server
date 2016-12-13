@@ -48,6 +48,19 @@ public class WorkServerHandler extends ChannelInboundHandlerAdapter {
 			praseMessage(ctx, body, ip);
 		}
 	}
+	
+	@Override
+	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+		// 将消息发送队列中的消息写入到SocketChannel中发送给对方。
+		ctx.flush();
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+			throws Exception {
+		LOGGER.error("异常退出", cause);
+		ctx.close();
+	}
 
 	/**
 	 * 消息处理
@@ -83,7 +96,7 @@ public class WorkServerHandler extends ChannelInboundHandlerAdapter {
 		if (!StringUtils.isEmpty(message)) {
 			LOGGER.info("终端[{}]，响应消息：{}", new Object[] { ip, message });
 			ByteBuf resp = Unpooled.copiedBuffer(message.getBytes("UTF-8"));
-			ctx.write(resp);
+			ctx.writeAndFlush(resp);
 		}
 	}
 }
