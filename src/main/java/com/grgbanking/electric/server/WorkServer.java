@@ -3,6 +3,7 @@ package com.grgbanking.electric.server;
 import org.apache.log4j.Logger;
 
 import com.grgbanking.electric.entity.Result;
+import com.grgbanking.electric.enums.OptEnum;
 import com.grgbanking.electric.enums.StatusEnum;
 import com.grgbanking.electric.json.JSONResult;
 
@@ -63,7 +64,13 @@ public abstract class WorkServer {
 			jsonResult = new JSONResult(getRes(), String.valueOf(StatusEnum.FAIL
 					.getValue()), "系统异常");
 		}
-		return jsonResult.toJson();
+		String message = null;
+		if (OptEnum.SyncTime.name().toUpperCase().equals(getReq().toUpperCase())) {
+			message = jsonResult.toTimeJson();
+		} else {
+			message = jsonResult.toJson();
+		}
+		return message;
 	}
 	
 	/**

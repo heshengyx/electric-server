@@ -91,7 +91,7 @@ public class JSONResult implements Serializable {
 		sb.append("','identityID':'").append(code);
 		sb.append("','fingerID':'").append(num);
 		sb.append("','Similarity':'").append(similarity);
-		if (StringUtils.isEmpty(deptName)) {
+		if (!StringUtils.isEmpty(deptName)) {
 			sb.append("','department':'").append(deptName);
 		}
 		sb.append("'}");
