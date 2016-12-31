@@ -7,11 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>electric-server Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	
+
 	<properties>
 		<spring.version>4.1.1.RELEASE</spring.version>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.grgbanking.electric</groupId>
@@ -72,13 +72,13 @@
 			<version>2.6</version>
 		</dependency>
 		<!-- servlet -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 		<!-- log4j包 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -105,7 +105,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<finalName>electric-server</finalName>
 		<plugins>

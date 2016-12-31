@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>  
+  
+<project name="electric-server" basedir="." default="default">
+    <property environment="env"/>
+ 
+    <property name="version" value="1.0"/>
+    <property name="project" value="electric-server"/>
+
+    <property name="src.dir" location="src/main/java"/>
+    <property name="build.dir" location="target/ant/classes" />
+    <property name="dist.dir" location="target/dist"/>    
+    
+    <property name="config.dir" location="src/main/resources" />
+    <property name="web.root" location="src/main/webapp" />
+ 
+    <property name="lib.dir" location="target/dependency"/>
+    <property name="test.dir" location="src/test/java"/>
+
+    <path id="classpath">
+	    <!--添加lib 中的jar 包到软件中-->     
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>     
+    </path>
+
+    <target name="makedir">
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${lib.dir}"/>
+    </target>     
+       
+    <target name="compile" depends="makedir">
+        <!-- 编译所有的代码,Server and client -->
+        <javac srcdir="${src.dir}"
+               destdir="${build.dir}"
+               encoding="UTF-8"
+               includeantruntime="no"
+               excludes="**/*.svn,*.svn"
+               includes="**/*.java"
+               source="1.6"
+               target="1.6"
+               deprecation="true"
+               failonerror="true"
+               debug="true">
+            <classpath refid="classpath" />
+        </javac>
+ 
+        <!-- 把所有文件copy到build目录 -->
+        <copy todir="${build.dir}">
+            <fileset dir="${config.dir}" includes="**/*"/>
+        </copy>
+    </target>
+
+    <!--生成war 包结构-->  
+    <target name="package" depends="compile">
+        <mkdir dir="${dist.dir}/${version}" />
+        <tstamp>
+            <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss"/>
+            <format property="TIME" pattern="yyMMddHHmm"/>
+        </tstamp>
+ 
+        <manifest file="${web.root}/META-INF/MANIFEST.MF">
+            <attribute name="Built-Date" value="${TODAY}"/>
+            <attribute name="Implementation-Title" value="${project}"/>
+            <attribute name="Implementation-Version" value="${version}"/>
+        </manifest>
+ 
+        <!-- 打包所有的编译文件 -->
+ 
+        <!-- 生成Web配置及部署文件 -->
+        <war destfile="${dist.dir}/${version}/${project}.v${TIME}.war"
+             webxml="${web.root}/WEB-INF/web.xml" manifest="${web.root}/META-INF/MANIFEST.MF">
+            <fileset dir="${web.root}" excludes="${web.root}/WEB-INF/classes/*"></fileset>
+            <classes dir="${build.dir}" />
+            <lib dir="${lib.dir}" includes="**/*.jar" />
+        </war>
+    </target>  
+    
+    <target name="default" depends="package">
+    </target>
+</project>  
